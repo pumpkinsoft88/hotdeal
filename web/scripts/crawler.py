@@ -16,7 +16,7 @@ def run():
 
     # delete deals older than 3days
     row, _ = Deal.objects.filter(created_at__lte=datetime.now() -
-                                     timedelta(minutes=60)).delete()
+                                     timedelta(minutes=10)).delete()
     print(row, "deals deleted")
 
     for item in soup.find_all("tr", {'class':["list1","list0"]}):
@@ -32,7 +32,7 @@ def run():
             up_count = item.find_all("td")[-2].text
             up_count = up_count.split("-")[0]
             up_count = int(up_count)
-            if up_count >= 3:
+            if up_count >= 5:
                 if (Deal.objects.filter(link__iexact=link).count() == 0):
                     Deal(image_url = image, title=title, link=link, 
                     reply_count=reply_count, up_count=up_count).save()
